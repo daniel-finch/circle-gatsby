@@ -1,4 +1,8 @@
 version: 2
+
+orbs:
+  terraform: ovotech/terraform@1.6
+  
 jobs:
   build:
     docker:
@@ -14,10 +18,6 @@ jobs:
       - run:
           name: Print the Current Time
           command: date
-     
-      - run:
-          name: Run Terraform Init
-          command: terraform init
      
       - run:
           name: Run Terraform Version
