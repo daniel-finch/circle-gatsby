@@ -1,8 +1,5 @@
 version: 2
 
-orbs:
-  terraform: ovotech/terraform@1.6
-  
 jobs:
   build:
     docker:
@@ -18,20 +15,3 @@ jobs:
       - run:
           name: Print the Current Time
           command: date
-          
-  terraform_plan:
-    executor: terraform/default
-    environment:
-      AIVEN_PROVIDER: true
-    steps:
-      - checkout
-      - terraform/plan:
-          path: tf
-
-workflows:
-  test:
-    jobs:
-      - terraform_plan:
-          filters:
-            branches:
-              ignore: master
