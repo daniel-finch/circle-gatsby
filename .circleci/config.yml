@@ -18,7 +18,20 @@ jobs:
       - run:
           name: Print the Current Time
           command: date
-     
-      - run:
-          name: Run Terraform Version
-          command: terraform version
+          
+   terraform_plan:
+    executor: terraform/default
+    environment:
+      AIVEN_PROVIDER: true
+    steps:
+      - checkout
+      - terraform/plan:
+          path: tf
+
+workflows:
+  test:
+    jobs:
+      - terraform_plan:
+          filters:
+            branches:
+              ignore: master
