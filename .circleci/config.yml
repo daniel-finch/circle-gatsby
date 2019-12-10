@@ -19,7 +19,7 @@ jobs:
           name: Print the Current Time
           command: date
           
-   terraform_plan:
+  terraform_plan:
     executor: terraform/default
     environment:
       AIVEN_PROVIDER: true
