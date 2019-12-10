@@ -1,17 +1,35 @@
 version: 2
 
+orbs:
+  aws-ecr: circleci/aws-ecr@3.0.0
+  aws-cli: circleci/aws-cli@0.1.9
+
 jobs:
   build:
+    working_directory: ~/tmp
     docker:
-      - image: debian:stretch
-
+      - image: hashicorp/terraform:0.11.11
     steps:
+      - aws-cli/install
       - checkout
-
       - run:
-          name: Greeting
-          command: echo Hello, world.
-
+          name: Branch Name
+          command: echo ${CIRCLE_BRANCH}
+      - run: 
+          name: Terraform Version
+          command:  terraform version
+      - run: 
+          name: Terraform Init 
+          command: terraform init
       - run:
-          name: Print the Current Time
-          command: date
+          name: Check ENV Vars
+          command: echo $aws_access_key_id
+      - run:
+          name: Set Providers Auth
+          command: mkdir  ~/.aws && echo -e "[default]\n$aws_access_key_id" >> ~/.aws/credentials && cat ~/.aws/credentials
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build:
+          context: LBH-WEBSITE-AWS
